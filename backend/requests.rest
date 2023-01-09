@@ -1,0 +1,21 @@
+POST https://filemanager.dawidkomeza.pl/api/signup
+content-Type: application/json
+
+{
+    "username": "dkomeza",
+    "password": "Pelzak99"
+}
+
+###
+
+POST https://filemanager.dawidkomeza.pl/api/login
+content-Type: application/json
+
+{
+    "username": "dkomeza",
+    "password": "Pelzak99"
+}
+
+###
+
+GET https://filemanager.dawidkomeza.pl/api/status
