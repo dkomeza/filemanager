@@ -1,4 +1,5 @@
 import Datastore from "nedb";
+import cypher from "../utils/cypher";
 
 interface User {
   username: string;
@@ -14,16 +15,73 @@ class Database {
       autoload: true,
     });
   }
-  createUser(data: User) {
-    this.UserDatabase.insert({
-      username: data.username,
-      passwordHash: data.passwordHash,
-      privateKey: data.privateKey,
+  async createUser(data: User) {
+    return new Promise((resolve, reject) => {
+      this.UserDatabase.findOne({ username: data.username }, (err, doc) => {
+        if (doc) {
+          reject("User already exists");
+        }
+      });
+      this.UserDatabase.insert(
+        {
+          username: data.username,
+          passwordHash: data.passwordHash,
+          privateKey: data.privateKey,
+        },
+        (err, doc) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(doc);
+          }
+        }
+      );
     });
   }
-  changePrivateKey(username: string, passwordHash: string) {
-    this.UserDatabase.findOne({ username: username }, (err: any, doc: User) => {
-      console.log(doc.passwordHash === passwordHash);
+  async updateKeyPair(username: string, passwordHash: string) {
+    const { privateKey, publicKey } = cypher.createKeyPair(passwordHash);
+    return new Promise((resolve, reject) => {
+      this.UserDatabase.findOne(
+        {
+          username: username,
+          passwordHash: passwordHash,
+        },
+        (err, doc) => {
+          if (doc) {
+            this.UserDatabase.update(
+              { username: username, passwordHash: passwordHash },
+              { $set: { privateKey: privateKey } },
+              {},
+              (err, numReplaced) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  resolve(publicKey);
+                }
+              }
+            );
+          } else {
+            reject("User not found");
+          }
+        }
+      );
+    });
+  }
+  async getUser(username: string, publicKey: string) {
+    return new Promise((resolve, reject) => {
+      this.UserDatabase.findOne({ username: username }, (err, doc: User) => {
+        if (doc) {
+          if (
+            cypher.checkKeyPair(publicKey, doc.privateKey, doc.passwordHash)
+          ) {
+            resolve(doc.username);
+          } else {
+            reject("Invalid key pair");
+          }
+        } else {
+          reject("User not found");
+        }
+      });
     });
   }
 }

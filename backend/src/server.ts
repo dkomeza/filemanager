@@ -1,6 +1,5 @@
 import express from "express";
 import Auth from "./api/Auth";
-import cypher from "./utils/cypher";
 
 const app = express();
 
@@ -8,11 +7,33 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.post("/signup", (req, res) => {
-  Auth.signup("admin", "admin").then((data) => res.send(data));
+  const { username, password } = req.body;
+  Auth.signup(username, password).then((data) => res.send(data));
 });
 
 app.post("/login", (req, res) => {
-  Auth.login("admin", "admin").then((data) => res.send(data));
+  const { username, password } = req.body;
+  Auth.login(username, password).then((data) => {
+    if (data.error) {
+      res.status(401);
+      res.send(data);
+    } else {
+      res.send(data);
+    }
+  });
+});
+
+app.post("/auth", (req, res) => {
+  const { username, publicKey } = req.body;
+
+  Auth.auth(username, publicKey).then((data) => {
+    if (data.error) {
+      res.status(401);
+      res.send(data);
+    } else {
+      res.send(data);
+    }
+  });
 });
 
 app.get("/status", (req, res) => {

@@ -8,18 +8,37 @@ class Auth {
   }
 
   public async login(username: string, password: string) {
-    this.db.changePrivateKey(username, cypher.cypherPassword(password));
-    // const user = this.db.getUser(username);
+    try {
+      const publicKey = await this.db.updateKeyPair(
+        username,
+        cypher.cypherPassword(password)
+      );
+      return { username, publicKey };
+    } catch (err) {
+      console.log(err);
+      return { error: "User not found" };
+    }
   }
 
   public async signup(username: string, password: string) {
     const passwordHash = cypher.cypherPassword(password);
     const { publicKey, privateKey } = cypher.createKeyPair(passwordHash);
-    this.db.createUser({ username, passwordHash, privateKey });
-    return publicKey;
+    try {
+      await this.db.createUser({ username, passwordHash, privateKey });
+      return { username, publicKey };
+    } catch (err) {
+      return { error: err };
+    }
   }
 
-  public async auth(publicKey: string) {}
+  public async auth(username: string, publicKey: string) {
+    try {
+      await this.db.getUser(username, publicKey);
+      return { username, publicKey };
+    } catch (err) {
+      return { error: err };
+    }
+  }
 }
 
 export default new Auth();

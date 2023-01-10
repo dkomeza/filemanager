@@ -3,7 +3,7 @@ content-Type: application/json
 
 {
     "username": "dkomeza",
-    "password": "Pelzak99"
+    "password": "haslo123"
 }
 
 ###
@@ -13,7 +13,17 @@ content-Type: application/json
 
 {
     "username": "dkomeza",
-    "password": "Pelzak99"
+    "password": "haslo123"
+}
+
+###
+
+POST https://filemanager.dawidkomeza.pl/api/auth
+content-Type: application/json
+
+{
+    "username": "dkomeza",
+    "publicKey": "efd818453b971155c6e19dfd0403b15b57e012f8f0ef79735454a7421e15d4211e725db9c31e292ef0954fcf9d4e286424848cc79faa7ef36b3724869706174ab1b7f652bcf0a9302a3f16e43363df72e2eeba1216a7c1e1ac7fb3f199a379881e32470a86f038fe4477f0f7f42af56c2d885358db9ec7adb2a14f4bff4eb541f297c9b0f73c08ba721dbbb7eec159bcc59eb8109e57dbf94669b55d0b575879103b942f24fccaf9c9351b4c5c2a40a43a2aab5a83093101c5c73269c330018d434c7f7501bc4fcaa2fcea66b491c82e805a7481782c158ce0ee0ef9f0ff3f646aa4dac3411d4c12db9b09a6ba4de3e8ec0cbadf61ca1baf67714c9a733f9a05"
 }
 
 ###

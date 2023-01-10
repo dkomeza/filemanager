@@ -5,10 +5,8 @@ import CryptoJS from "crypto-js";
 dotenv.config();
 
 class cypher {
-  private passwordKey: string;
   private fileKey: string;
   constructor() {
-    this.passwordKey = process.env.CYPHER_KEY!;
     this.fileKey = process.env.CYPHER_FILE_KEY!;
   }
   cypherPassword = (password: string) => {
