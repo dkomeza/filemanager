@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@Auth/context/AuthContext";
 import PrivateRoute from "@Auth/components/PrivateRoute";
+import ContentRouter from "@Content/ContentRouter";
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
               path="*"
               element={
                 <PrivateRoute>
-                  <div>Home</div>
+                  <ContentRouter />
                 </PrivateRoute>
               }
             />
