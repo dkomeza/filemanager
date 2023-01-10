@@ -7,6 +7,22 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 3000,
+    port: 3001,
+  },
+  resolve: {
+    alias: [
+      {
+        find: "@",
+        replacement: path.resolve(__dirname, "src"),
+      },
+      {
+        find: "@Auth",
+        replacement: path.join(__dirname, "/src/components/Auth"),
+      },
+      {
+        find: "@Content",
+        replacement: path.join(__dirname, "/src/components/Content"),
+      },
+    ],
   },
 });
