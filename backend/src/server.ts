@@ -1,5 +1,6 @@
 import express from "express";
 import Auth from "./api/Auth";
+import cypher from "./utils/cypher";
 
 const app = express();
 
