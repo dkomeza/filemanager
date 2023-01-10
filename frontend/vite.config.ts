@@ -23,6 +23,7 @@ export default defineConfig({
         find: "@Content",
         replacement: path.join(__dirname, "/src/components/Content"),
       },
+      { find: "@Style", replacement: path.join(__dirname, "/src/scss") },
     ],
   },
 });

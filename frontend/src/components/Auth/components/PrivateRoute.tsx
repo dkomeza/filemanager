@@ -5,5 +5,5 @@ import { ReactElement } from "react";
 export default function PrivateRoute({ children }: { children: ReactElement }) {
   const auth = useAuth();
   const currentUser = auth?.currentUser;
-  return 1 ? children : <Navigate to={"/login"} />;
+  return currentUser ? children : <Navigate to={"/login"} />;
 }
