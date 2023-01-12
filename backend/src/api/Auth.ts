@@ -15,8 +15,7 @@ class Auth {
       );
       return { username, publicKey };
     } catch (err) {
-      console.log(err);
-      return { error: "User not found" };
+      return { error: err };
     }
   }
 

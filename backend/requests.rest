@@ -2,8 +2,8 @@ POST https://filemanager.dawidkomeza.pl/api/signup
 content-Type: application/json
 
 {
-    "username": "dkomeza",
-    "password": "haslo123"
+    "username": "test",
+    "password": "test"
 }
 
 ###
@@ -12,8 +12,8 @@ POST https://filemanager.dawidkomeza.pl/api/login
 content-Type: application/json
 
 {
-    "username": "dkomeza",
-    "password": "haslo123"
+    "username": "test",
+    "password": "test"
 }
 
 ###
