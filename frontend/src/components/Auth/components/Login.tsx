@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import backgroundImage from "@Auth/assets/background.webp";
 import logo from "@Auth/assets/logo.webp";
@@ -14,28 +14,29 @@ function Login() {
   const { currentUser, logIn } = useAuth()!;
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-
-  const [emailCorrect, setEmailCorrect] = useState(false);
   const [username, setUsername] = useState("");
   const [animate, setAnimate] = useState(false);
   const [transform, setTransform] = useState(0);
   const [error, setError] = useState("");
-
+  const navigate = useNavigate();
   useEffect(() => {
+    if (currentUser) {
+      console.log(currentUser);
+      navigate("/");
+      return;
+    }
     imageParalex();
   }, []);
 
-  const navigate = useNavigate();
   function handleUsernameSubmit() {
     if (usernameRef.current?.value) {
-      setUsername(usernameRef.current?.value);
       setAnimate(true);
       setTimeout(() => {
         setTransform(-200);
       }, 1);
 
       setTimeout(() => {
-        setEmailCorrect(true);
+        setUsername(usernameRef.current?.value!);
         setAnimate(false);
       }, 1000);
     }
@@ -46,6 +47,19 @@ function Login() {
       navigate("/");
     } catch (e: any) {
       setError(e.message);
+      setAnimate(true);
+      setTimeout(() => {
+        setTransform(0);
+      }, 1);
+
+      setTimeout(() => {
+        setAnimate(false);
+        setUsername("");
+      }, 1000);
+
+      setTimeout(() => {
+        setError("");
+      }, 2000);
     }
   }
   return (
@@ -61,13 +75,13 @@ function Login() {
           </div>
           <div className="login-container">
             <div className="login-wrapper">
-              <img src={logo} alt="Logo" />
               {error && (
                 <span style={{ display: "block", textAlign: "center" }}>
                   {error}
                 </span>
               )}
-              {(!emailCorrect || animate) && (
+              <img src={logo} alt="Logo" />
+              {(!username || animate) && (
                 <div
                   style={{ transform: `translateX(${transform}%)` }}
                   className="email-container form-container"
@@ -89,11 +103,12 @@ function Login() {
                     Sign in with username
                   </button>
                   <div className="signup-wrapper">
-                    Don't have an account? <a href="/signup">Sign up</a> here!
+                    Don't have an account? <Link to="/signup">Sign up</Link>{" "}
+                    here!
                   </div>
                 </div>
               )}
-              {(emailCorrect || animate) && (
+              {(username || animate) && (
                 <div
                   className="password-container form-container"
                   style={{ transform: `translateX(${200 + transform}%)` }}

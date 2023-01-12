@@ -23,8 +23,22 @@ export function AuthProvider({ children }: { children: any }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setCurrentUser(loadUser());
-    setLoading(false);
+    async function loadUser() {
+      const userString = localStorage.getItem("user");
+      if (!userString) {
+        console.log(userString);
+        setLoading(false);
+        return undefined;
+      }
+      const { username, publicKey } = JSON.parse(userString);
+      try {
+        setCurrentUser(await auth(username, publicKey));
+      } catch (err: any) {
+        console.log(err.message);
+      }
+      setLoading(false);
+    }
+    loadUser();
   }, []);
 
   const value = {
@@ -66,9 +80,28 @@ export function AuthProvider({ children }: { children: any }) {
     saveCredentials(data);
   }
 
+  async function auth(username: string, publicKey: string) {
+    const res = await fetch("https://filemanager.dawidkomeza.pl/api/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username: username, publicKey: publicKey }),
+    });
+    const data = await res.json();
+    if (data.error) {
+      throw new Error(data.error);
+    }
+    return { username: data.username, publicKey: data.publicKey };
+  }
+
   function signOut() {
     setCurrentUser(undefined);
     localStorage.removeItem("user");
+  }
+
+  function saveCredentials(user: User) {
+    localStorage.setItem("user", JSON.stringify(user));
   }
 
   return (
@@ -76,16 +109,4 @@ export function AuthProvider({ children }: { children: any }) {
       {!loading && children}
     </AuthContext.Provider>
   );
-}
-
-function loadUser() {
-  const userString = localStorage.getItem("user");
-  if (!userString) {
-    return undefined;
-  }
-  return JSON.parse(userString);
-}
-
-function saveCredentials(user: User) {
-  localStorage.setItem("user", JSON.stringify(user));
 }

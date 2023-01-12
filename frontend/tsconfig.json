@@ -21,7 +21,8 @@
       "@Firebase/*": ["./firebase/*"],
       "@Auth/*": ["./src/components/Auth/*"],
       "@Content/*": ["./src/components/Content/*"],
-      "@Style/*": ["./src/scss/*"]
+      "@Style/*": ["./src/scss/*"],
+      "@Assets/*": ["./src/assets/*"],
     }
   },
   "include": ["src"],

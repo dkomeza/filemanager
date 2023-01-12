@@ -24,6 +24,7 @@ export default defineConfig({
         replacement: path.join(__dirname, "/src/components/Content"),
       },
       { find: "@Style", replacement: path.join(__dirname, "/src/scss") },
+      { find: "@Assets", replacement: path.join(__dirname, "/src/assets") },
     ],
   },
 });

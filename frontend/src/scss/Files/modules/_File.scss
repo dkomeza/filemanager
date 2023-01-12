@@ -1,0 +1,29 @@
+@use "@Style/variables" as *;
+
+.files {
+  .file {
+    display: block;
+    // width: 200px;
+    width: 100px;
+    border-radius: 16px;
+    // background-color: $background-transparent;
+    padding: 8px;
+    h3 {
+      text-align: center;
+      width: 100%;
+      overflow-wrap: break-word;
+      pointer-events: none;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    img {
+      margin: 0 auto;
+      pointer-events: none;
+      display: block;
+      border-radius: 8px;
+      height: 64px;
+      user-select: none;
+    }
+  }
+}
